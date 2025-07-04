@@ -2,32 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Live Addition Calculator</title>
+  <title>Live Math Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
-      max-width: 500px;
+      max-width: 600px;
       margin: auto;
+      background: #f4f4f4;
+    }
+    h2 {
+      text-align: center;
     }
     textarea {
       width: 100%;
       height: 150px;
       font-size: 16px;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 8px;
     }
     #total {
       font-weight: bold;
-      font-size: 20px;
-      margin-top: 10px;
+      font-size: 24px;
+      margin-top: 15px;
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    }
+    p {
+      font-size: 14px;
+      color: #555;
     }
   </style>
 </head>
 <body>
 
-  <h2>Live Addition Calculator</h2>
-  <p>Enter lines like: <code>55 4x</code>, <code>55 x 4</code>, or <code>55x4</code></p>
+  <h2>Live Math Calculator</h2>
+  <p>Enter each line as:<br>
+    <code>10x2</code>, <code>10 x 2</code>, or <code>10 2x</code><br>
+    (Other lines will be ignored)
+  </p>
 
-  <textarea id="input" placeholder="e.g.&#10;55 4x&#10;10 x 2&#10;60x1"></textarea>
+  <textarea id="input" placeholder="e.g.&#10;10x2&#10;55 x 4&#10;60 1x"></textarea>
   <div id="total">Total: 0</div>
 
   <script>
@@ -43,14 +64,12 @@
       for (let line of lines) {
         line = line.trim();
 
-        // Accept these formats only:
-        // 1. number x number (with optional spaces)
-        // 2. numberxnumber
-        // 3. number numberx
+        // Match valid formats only:
+        // 10 x 2, 10x2, 10 2x
         let match =
-          line.match(/^(\d+)\s*x\s*(\d+)$/i) ||     // 10 x 2
-          line.match(/^(\d+)x(\d+)$/i) ||           // 10x2
-          line.match(/^(\d+)\s+(\d+)x$/i);          // 10 2x
+          line.match(/^(\d+)\s*x\s*(\d+)$/i) ||   // 10 x 2
+          line.match(/^(\d+)x(\d+)$/i) ||         // 10x2
+          line.match(/^(\d+)\s+(\d+)x$/i);        // 10 2x
 
         if (match) {
           const num = parseFloat(match[1]);
