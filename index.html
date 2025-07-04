@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Live Addition Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      font-size: 16px;
+    }
+    #total {
+      font-weight: bold;
+      font-size: 20px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Live Addition Calculator</h2>
+  <p>Enter lines like: <code>55 4x</code>, <code>55 x 4</code>, or <code>55x4</code></p>
+
+  <textarea id="input" placeholder="e.g.&#10;55 4x&#10;10 x 2&#10;60x1"></textarea>
+  <div id="total">Total: 0</div>
+
+  <script>
+    const inputField = document.getElementById('input');
+    const totalDisplay = document.getElementById('total');
+
+    inputField.addEventListener('input', calculate);
+
+    function calculate() {
+      const lines = inputField.value.split('\n');
+      let sum = 0;
+
+      for (let line of lines) {
+        line = line.trim();
+
+        // Accept these formats only:
+        // 1. number x number (with optional spaces)
+        // 2. numberxnumber
+        // 3. number numberx
+        let match =
+          line.match(/^(\d+)\s*x\s*(\d+)$/i) ||     // 10 x 2
+          line.match(/^(\d+)x(\d+)$/i) ||           // 10x2
+          line.match(/^(\d+)\s+(\d+)x$/i);          // 10 2x
+
+        if (match) {
+          const num = parseFloat(match[1]);
+          const qty = parseFloat(match[2]);
+          sum += num * qty;
+        }
+      }
+
+      totalDisplay.textContent = "Total: " + sum;
+    }
+  </script>
+
+</body>
+</html>
